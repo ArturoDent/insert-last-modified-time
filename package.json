@@ -2,7 +2,7 @@
   "name": "insert-last-modified-time",
   "displayName": "Insert Last Modified Time",
   "description": "Insert the last modified time of a file as part of a template.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.46.0"
   },

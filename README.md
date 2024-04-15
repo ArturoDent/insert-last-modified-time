@@ -12,6 +12,9 @@ This command will use the current template and options from the settings and ins
 
 This command can be used in a `editor.codeActionsOnSave` setting (see below) so that the command is triggered each time you save the file.
 
+-----------------
+-----------------
+
 2. "LMT: Insert Last Modified Time at cursor" : (`insert-last-modified-time.insertTimeCursor`)
 
 Simply insert the last modified time at the cursor - does not use the template, but does use the options (as shown below).
@@ -78,7 +81,12 @@ Another example of a template:
 "insertLastModifiedTime.template": "/**\n * Last Modified Time: %% LMT %%: JS\n */",
 ```
 
-As seen above you can use `\n` or `\t` instead of actual whietspace in your templates.
+As seen above you can use `\n` or `\t` instead of actual whietspace in your templates.  
+
+* IMPORTANT: If you change the template after one has already been added to a file, this extension will not be able to match the new template to any older template already added at the top of the file.  In that case, the new template will be added to the top (above the old template, it won't be able to replace it) and you would have to manually remove the old template at the top of the file.  So don't change the templates frequently.  The extension could try to keep a record of older templates, but this gets tedious for multiple languages and probaby won't be done.
+
+-----------------
+-----------------
 
 2. Insert Last Modified Time: Options (`insertLastModifiedTime.options` in settings.json)
 

@@ -11,16 +11,16 @@ export async function get(template: string): Promise<Range|undefined> {
   
   const textToSearch = editor?.document.getText(templateRange);
   
-  // don't modifiy the global template
-  let template2 = template.replaceAll(/([\*\/\[\]\{\}\(\)\?\^\$])/g, "\\$1");
+  // so these symbols don't conflict with the regex created below
+  template = template.replaceAll(/([\*\/\[\]\{\}\(\)\?\^\$])/g, "\\$1");
   
   // because vscode "normalizes" \n => \r\n on Windows
-  template2 = template2.replaceAll('\n', "\r?\n");
+  template = template.replaceAll('\n', "\r?\n");
   
   // so any number of whitespaces in %% LMT %% still works
-  template2 = template2?.replaceAll(/%%\s*LMT\s*%%/g, "[\\w\\W]*?");  
+  template = template?.replaceAll(/%%\s*LMT\s*%%/g, "[\\w\\W]*?");
   
-  const regex = new RegExp(template2);
+  const regex = new RegExp(template);
   const found = textToSearch?.match(regex);
   
   if (found?.index || found?.index === 0) {
