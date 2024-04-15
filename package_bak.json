@@ -1,0 +1,238 @@
+{
+  "name": "insert-last-modified-time",
+  "displayName": "Insert Last Modified Time",
+  "description": "Insert the last modified time of a file as part of a template.",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.46.0"
+  },
+  "preview": true,
+  "publisher": "ArturoDent",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ArturoDent/repeat-commands"
+  },
+  "funding": {
+    "url": "https://www.buymeacoffee.com/ArturoDent"
+  },
+  "categories": [
+    "Other",
+    "Snippets"
+  ],
+  "keywords": [
+    "date",
+    "time",
+    "snippet",
+    "template"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "browser": "./out/extension.js",
+  "extensionKind": [
+    "ui",
+    "workspace"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "insert-last-modified-time.insertTimeTop",
+        "title": "Insert Last Modified Time at top of file",
+        "category": "LMT",
+        "shortTitle": "Insert time at top",
+        "icon": "$(clock)",
+        "enablement": "resourceScheme === 'file' && !activeEditorIsReadOnly"
+      },
+      {
+        "command": "insert-last-modified-time.insertTimeCursor",
+        "title": "Insert Last Modified Time at the cursor",
+        "category": "LMT",
+        "shortTitle": "Insert time at cursor",
+        "icon": "$(clock)",
+        "enablement": "resourceScheme === 'file' && !activeEditorIsReadOnly"
+      }
+    ],
+    "configuration": [
+      {
+        "title": "Insert Last Modified Time",
+        "properties": {
+          "insertLastModifiedTime.template": {
+            "order": 0,
+            "type": "string",
+            "scope": "resource",
+            "editPresentation": "multilineText",
+            "default": "/**\n * Last Modified Time: %{insert-here}%\n */",
+            "markdownDescription": "A default template containing a last modified time is shown.  You can edit that template.  Put `%{insert-here}%` where you want your formatted date and time to appear."
+          },
+          "insertLastModifiedTime.options": {
+            "order": 1,
+            "title": "Insert Last Modified Time: Options",
+            "markdownDescription": "Locales and options for formatting the date and time styles, see [options](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#options).",
+            "type": "object",
+            "scope": "resource",
+          
+            "properties": {
+              
+              "locales": {
+                "type": ["string", "array"],
+                "default": "en-US",
+                "markdownDescription": "See [IANA locale registry](https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry)."
+              },
+              "year": {
+                "type": "string",
+                "enum": ["numeric", "2-digit"],
+                "markdownEnumDescriptions": [
+                  "Using `2024` as the year:\n```jsonc\n \"numeric\" === 2024\n```",
+                  "Using `2024` as the year:\n```jsonc\n \"2-digit\" === 24\n```"
+                ]
+              },
+              "month": {
+                "type": "string",
+                "enum": ["numeric", "2-digit", "long", "short", "narrow"],
+                "markdownEnumDescriptions": [
+                  "Using `March` as the month:\n```jsonc\n \"numeric\" === 3\n```",
+                  "Using `March` as the month:\n```jsonc\n \"2-digit\" === 03\n```",
+                  "Using `March` as the month:\n```jsonc\n \"long\" === March\n```",
+                  "Using `March` as the month:\n```jsonc\n \"short\" === Mar\n```", 
+                  "Using `March` as the month:\n```jsonc\n \"narrow\" === M\n```"
+                ]
+              },
+              "day": {
+                "type": "string",
+                "enum": ["numeric", "2-digit"],
+                "markdownEnumDescriptions": [
+                  "Using `02` as the day:\n```jsonc\n \"numeric\" === 2\n```",
+                  "Using `02` as the day:\n```jsonc\n \"2-digit\" === 02\n```"
+                ]
+              },
+              "weekday": {
+                "type": "string",
+                "enum": ["long", "short", "narrow"],
+                "markdownEnumDescriptions": [
+                  "Using `Thursday` as the weekday:\n```jsonc\n \"long\" === Thursday\n```",
+                  "Using `Thursday` as the weekday:\n```jsonc\n \"short\" === Thu\n```",
+                  "Using `Thursday` as the weekday:\n```jsonc\n \"narrow\" === T\n```"
+                ]
+              },
+              "dayPeriod": {
+                "type": "string",
+                "enum": ["narrow", "short", "long"],
+                "markdownDescription": "The formatting style used for day periods like `in the morning`, `am`, `noon`, `n`, etc. This option only has an effect if a 12-hour clock (hourCycle: \"h12\" or hourCycle: \"h11\") is used. Many locales use the same string irrespective of the width specified."
+              },
+              "hour": {
+                "type": "string",
+                "enum": ["numeric", "2-digit"],
+                "markdownEnumDescriptions": [
+                  "Using `8 PM` as the hour:\n```jsonc\n \"numeric\" === 8 PM\n```",
+                  "Using `8 PM` as the hour:\n```jsonc\n \"2-digit\" === 08 PM\n```"
+                ]
+              },
+              "minute": {
+                "type": "string",
+                "enum": ["numeric", "2-digit"],
+                "markdownEnumDescriptions": [
+                  "Using `02` as the minute:\n```jsonc\n \"numeric\" === 2\n```",
+                  "Using `02` as the minute:\n```jsonc\n \"2-digit\" === 02\n```"
+                ]
+              },
+              "second": {
+                "type": "string",
+                "enum": ["numeric", "2-digit"],
+                "markdownEnumDescriptions": [
+                  "Using `05` as the second:\n```jsonc\n \"numeric\" === 5\n```",
+                  "Using `05` as the second:\n```jsonc\n \"2-digit\" === 05\n```"
+                ]
+              },
+              "dateStyle": {
+                "type": "string",
+                "enum": ["full", "long", "medium", "short"],
+                "markdownEnumDescriptions": [
+                  "Using `en-US` as the locale:\n```jsonc\n \"full\" === Saturday, December 19, 2020\n```",
+                  "Using `en-US` as the locale:\n```jsonc\n \"long\" === December 19, 2020\n```",
+                  "Using `en-US` as the locale:\n```jsonc\n \"medium\" === Dec 19, 2020\n```",
+                  "Using `en-US` as the locale:\n```jsonc\n \"short\" === 12/19/20\n```"
+                ],
+                "markdownDescription": "`dateStyle` and `timeStyle` can be used with each other, but not with other date-time component options (e.g., `weekday`, `hour`, `month`, etc.)."
+              },
+              "timeStyle": {
+                "type": "string",
+                "enum": ["full", "long", "medium", "short"],
+                "markdownEnumDescriptions": [
+                  "Using `en-US` as the locale:\n```jsonc\n \"full\" === 8:23:16 PM Mountain Standard Time\n```",
+                  "Using `en-US` as the locale:\n```jsonc\n \"long\" === 8:23:16 PM MST\n```",
+                  "Using `en-US` as the locale:\n```jsonc\n \"medium\" === 8:23:16 PM\n```",
+                  "Using `en-US` as the locale:\n```jsonc\n \"short\" === 8:23 PM\n```"
+                ],
+                "markdownDescription": "`dateStyle` and `timeStyle` can be used with each other, but not with other date-time component options (e.g., ``weekday`, `hour`, `month`, etc.)."
+              },
+              "localeMatcher": {
+                "type": "string",
+                "enum": ["lookup", "best fit"],
+                "default": "best fit",
+                "markdownDescription": "See [locale resolution](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#localematcher)."
+              },
+              "calendar": {
+                "type": "string",
+                "markdownDescription": "The calendar to use. For a list of supported calendar types, see [Intl calendars](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getCalendars#supported_calendar_types). \n\nExamples: `chinese`, `gregory`, `persian`."
+              },        
+              "numberingSystem": {
+                "type": "string",
+                "markdownDescription": "The numbering system to use for number formatting. For a list of supported numbering system types, see [Intl numbering systems](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getNumberingSystems#supported_numbering_system_types). \n\nExamples: `arab`, `hans`, `mathsans`."
+              },
+              "hour12": {
+                "type": "boolean",
+                "description": "Whether to use 12-hour time (as opposed to 24-hour time). The default is locale-dependent."
+              },
+              "hourCycle": {
+                "type": "string",
+                "enum": ["h11", "h12", "h23", "h24"]
+              },
+              "timeZone": {
+                "type": "string",
+                "markdownDescription": "The default is the runtime's default time zone. See [IANA time zones](https://www.iana.org/time-zones).\n\nExamples: \"Asia/Shanghai\", \"Asia/Kolkata\", \"America/New_York\"."
+              },
+              "timeZoneName": {
+                "type": "string",
+                "enum": ["long", "short", "shortOffset", "longOffset", "shortGeneric", "longGeneric"],
+                "markdownEnumDescriptions": [
+                  "Using `en-US` as the locale:\n```jsonc\n \"long\" === Pacific Standard Time\n```",
+                  "Using `en-US` as the locale:\n```jsonc\n \"short\" === PST\n```",
+                  "Using `en-US` as the locale:\n```jsonc\n \"shortOffset\" === GMT-8\n```",
+                  "Using `en-US` as the locale:\n```jsonc\n \"longOffset\" === GMT-08:00\n```",
+                  "Using `en-US` as the locale:\n```jsonc\n \"shortGeneric\" === PT\n```",
+                  "Using `en-US` as the locale:\n```jsonc\n \"longGeneric\" === Pacific Time\n```"                  
+                ],
+                "markdownDescription": "The default is the runtime's default time zone. See [IANA time zones](https://www.iana.org/time-zones).\n\nExamples: \"Asia/Shanghai\", \"Asia/Kolkata\", \"America/New_York\"."
+              }
+            },
+            "additionalProperties": false,
+            "uniqueItems": true
+          }
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "lint": "eslint src --ext ts",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.46.0",
+    "@types/glob": "^7.1.1",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^13.11.0",
+    "eslint": "^6.8.0",
+    "@typescript-eslint/parser": "^2.30.0",
+    "@typescript-eslint/eslint-plugin": "^2.30.0",
+    "glob": "^7.1.6",
+    "mocha": "^7.1.2",
+    "typescript": "^3.8.3",
+    "vscode-test": "^1.3.0"
+  }
+}
